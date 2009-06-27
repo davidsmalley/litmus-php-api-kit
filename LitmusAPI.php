@@ -1,5 +1,12 @@
 <?php
 
+  set_include_path(implode(array(
+  (dirname(__FILE__) . "/lib/"),
+  (dirname(__FILE__) . "/litmus-lib/"),
+  get_include_path()
+  ), ":"));
+  require_once("lib/nusoap.php");
+
   /**
   * Core class for the Litmus API
   */
@@ -12,6 +19,7 @@
     
     # Where we store the connection to the server
     private $client;
+    private $proxy;
     
     # List of available API methods
     private $methods;
@@ -33,22 +41,30 @@
     public function methods( $refresh=false )
     {
       if (is_null($this->methods) || $refresh) {
-        $this->methods = $this->client->__getFunctions();
+        $this->client->call("__getFunctions");
+        $this->methods = array_keys($this->client->operations);
       }
       return $this->methods;
     }
     
-    public function __call( $method, $args )
+    public function CreatePageTest( $page_test )
     {
-      return $this->client->$method($this->api_key, $this->api_pass, $args);
+      $result = $this->proxy->CreatePageTest($this->api_key, $this->api_pass, $page_test);
+      return PageTest::build($result);
     }
     
+    public function GetPageTest( $id )
+    {
+      $result = $this->proxy->GetPageTest($this->api_key, $this->api_pass, $id);
+      return PageTest::build($result);
+    }
+    
+    
+      
     private function _setup_soap_client()
     {
-      $this->client = new soapclient(
-        "http://soap.litmusapp.com/soap/wsdl",
-        array( "cache" => WSDL_CACHE_NONE )
-      );
+      $this->client = new nusoap_client("http://soap.litmusapp.com/soap/wsdl", true);
+      $this->proxy = $this->client->getProxy();
     }
 
     private function set_api_credentials( $key, $pass )
@@ -61,5 +77,7 @@
 
   }
 
+  require "PageTest.php";
+  require "PageTestClient.php";
 
 ?>
