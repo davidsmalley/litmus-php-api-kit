@@ -53,6 +53,26 @@
       return PageTest::build($result);
     }
     
+    public function CreateEmailTest( $email_test )
+    {
+      
+    }
+    
+    # public function GetResult( $id )
+    # {
+    #   return $result = $this->proxy->GetResult($this->api_key, $this->api_pass, $id);
+    # }
+    
+    public function GetPageTestClients()
+    {
+      $result = $this->proxy->GetPageTestClients($this->api_key, $this->api_pass);
+      $clients = array();
+      foreach ($result as $params) {
+        $clients[] = new PageTestClient($params);
+      }
+      return $clients;
+    }
+    
     public function GetPageTest( $id )
     {
       $result = $this->proxy->GetPageTest($this->api_key, $this->api_pass, $id);
@@ -77,6 +97,7 @@
 
   }
 
+  require "LitmusTest.php";
   require "PageTest.php";
   require "PageTestClient.php";
 

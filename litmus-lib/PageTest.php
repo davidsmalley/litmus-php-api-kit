@@ -1,6 +1,6 @@
 <?php
 
-  class PageTest
+  class PageTest extends LitmusTest
   {
     public $Title;
     public $ID;
@@ -9,19 +9,7 @@
     public $URL;
     public $Results;
     public $State;
-    
-    function __construct( $params=array() ) {
-      if ($params != array()) {
-        foreach ($params as $k => $v) {
-          if ($k == "Results") {
-            $this->set_results($v);
-          } else {
-            $this->$k = $v;
-          }
-        }
-      }
-    }
-    
+
     public static function build( $obj )
     {
       $result = new PageTest(array(
