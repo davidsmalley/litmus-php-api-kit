@@ -81,10 +81,22 @@
       return EmailTest::build($result);
     }
 
-    # public function GetResult( $id )
-    # {
-    #   return $result = $this->proxy->GetResult($this->api_key, $this->api_pass, $id);
-    # }
+    /**
+     * Gets the result of one email or page client.
+     *
+     * @param string $id ID of the individual result
+     * @return PageTestClient or EmailTest Client with the data
+     */
+    public function GetResult( $id )
+    {
+      $result = $this->proxy->GetResult($this->api_key, $this->api_pass, $id);
+      if ($result["ResultType"] == "page") {
+        $r = new PageTestClient($result);
+      } else {
+        $r = new EmailTestClient($result);
+      }
+      return $r;
+    }
 
     /**
      * Returns all the page test clients
