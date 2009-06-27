@@ -91,7 +91,11 @@
       return PageTest::build($result);
     }
     
-    
+    public function GetEmailTest( $id )
+    {
+      $result = $this->proxy->GetEmailTest($this->api_key, $this->api_pass, $id);
+      return EmailTest::build($result);
+    }
       
     private function _setup_soap_client()
     {
