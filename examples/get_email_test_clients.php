@@ -2,8 +2,8 @@
 
   require "../LitmusAPI.php";
 
-  $apiKey  = "caius-api";
-  $apiPass = "orrq8xp9u0gm";
+  $apiKey  = "your-api-key";
+  $apiPass = "password";
 
   $o = new LitmusAPI($apiKey, $apiPass);
 
