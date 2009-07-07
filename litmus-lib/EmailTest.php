@@ -12,6 +12,7 @@
     public $InboxGUID;
     public $State;
     public $Subject;
+    public $Results;
 
     public static function build( $params=array() )
     {
@@ -26,8 +27,17 @@
         "InboxGUID" => $params["InboxGUID"],
         "State"     => $params["State"],
         "Subject"   => $params["Subject"],
+        "Results"   => $params["Results"]
       ));
       return $obj;
+    }
+    
+    public function set_results( $params=array() )
+    {
+      $this->Results = array();
+      foreach ($params as $client_params) {
+        $this->Results[] = new EmailTestClient($client_params);
+      }
     }
   }
 
